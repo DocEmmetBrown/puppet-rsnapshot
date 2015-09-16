@@ -56,7 +56,7 @@ define rsnapshot::server::config (
   $snapshot_root = "${backup_path_norm}/${name}"
 
   if($ssh_args) {
-    $ssh_args_processed = "-e 'ssh ${ssh_args}'"
+    $ssh_args_processed = "-e 'ssh ${ssh_args}' "
   } else {
     $ssh_args_processed = ''
   }
@@ -67,8 +67,11 @@ define rsnapshot::server::config (
     $rsync_wrapper_processed = "--rsync-path=\"${wrapper_path_norm}/${wrapper_rsync_ssh}\""
   }
 
-  $rsync_long_args_final = "${ssh_args_processed} ${rsync_long_args} ${rsync_wrapper_processed}"
+  $rsync_long_args_final = "${rsync_long_args} ${rsync_wrapper_processed}"
 
+  file { $backup_path :
+    ensure  => directory
+  } ->
 
   file { $snapshot_root :
     ensure  => directory,
@@ -147,6 +150,7 @@ define rsnapshot::server::config (
     rsync_short_args => $rsync_short_args,
     rsync_long_args => $rsync_long_args_final,
     du_args => $du_args,
+    ssh_args => $ssh_args,
   }
 
   $lockfile = "${rsnapshot::server::lock_path}${name}"
