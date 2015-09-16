@@ -64,6 +64,7 @@ class rsnapshot::client (
   $use_sudo = $rsnapshot::params::use_sudo,
   $push_ssh_key = $rsnapshot::params::push_ssh_key,
   $wrapper_path = $rsnapshot::params::wrapper_path,
+  $backup_path = $rsnapshot::params::server_backup_path,
   ) inherits rsnapshot::params {
 
   # Install
@@ -114,6 +115,7 @@ class rsnapshot::client (
     wrapper_path        => $wrapper_path_normalized,
     ssh_args            => $ssh_args,
     use_sudo            => $use_sudo,
+    backup_path         => $backup_path,
   }
 
 }
